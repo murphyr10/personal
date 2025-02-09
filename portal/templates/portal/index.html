@@ -1,0 +1,54 @@
+
+{% extends "portal/base.html" %}   
+{% load static %}
+{% block title %}
+Welcome to Blog
+{% endblock %}
+{% block content %}
+  
+
+<div class="album py-5 bg-light">
+  <div class="container">
+     <div class="row">
+  {% for post in post %}
+      <div class="col-md-4"><br>
+      {% if user.is_authenticated %}
+       <a class="text-dark" href="{% url 'post_single' post.id %}">
+          <div class="card mb-9 box-shadow">
+            {% if post.image %}
+              <img class="card-img-top" src="{{post.image.url}}" alt="card image cap">
+            {% else %}
+              <img class="card-img-top" src="{% static 'images/nuclear.jpg' %}" alt="default image"> <!-- Use a default image -->
+            {% endif %}
+              <div class="card-body">
+                  <h2 style="font-size:18px;font-weight:bold">{{post.title|truncatechars:70}}</h2>
+                  <p class="card-text">{{post.excerpt|truncatechars:70}}</p>
+                  <div class="d-flex justify-content-between allign-items-center">
+                      <small class="text-muted">9 mins</small>
+                  </div>
+              </div>
+          </div>
+        </a>
+      {% else %}
+        <div class="card mb-9 box-shadow">
+            {% if post.image %}
+                <img class="card-img-top" src="{{post.image.url}}" alt="card image cap">
+            {% else %}
+                <img class="card-img-top" src="{% static 'images/nuclear.jpg' %}" alt="default image"> <!-- Use a default image -->
+            {% endif %}
+            <div class="card-body">
+                <h2 style="font-size:18px;font-weight:bold">{{post.title|truncatechars:50}}</h2>
+                <p class="card-text">{{post.excerpt|truncatechars:50}}</p>
+                <p>You must be <a href="{% url 'login' %}">logged in</a> to view the full post.</p>
+            </div>
+        </div>
+      {% endif %}
+      
+      </div>
+  {% endfor %}
+     </div>
+  </div>
+</div>
+
+
+{% endblock %}

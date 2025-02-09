@@ -1,0 +1,37 @@
+{% extends "portal/base.html" %}   
+{% load static %}
+{% block title %}
+Catlist
+{% endblock %}
+
+
+{% block content %}
+     <div class='album py-5 bg-light'>
+       <div class='container'>
+
+        <div class='row'>
+        <div class='col-12 pb-5'><h1> List of {{catlist.cat}} posts</h1></div>
+        {% for post in catlist.posts %}
+           <div class='col-md-4'>
+            <a class="text-dark" href="{% url 'post_single' post.id %}">
+              <div class="card mb-4 box-shadow">
+                <img class="card-img-top" src="{{post.image.url}}" alt="card image cap">
+                <div class="card-body">
+                    <h2 style="font-size:18px;font-weight:bold">{{post.title|truncatechars:70}}</h2>
+                    <p class="card-text">{{post.excerpt|truncatechars:70}}</p>
+                    <div class="d-flex justify-content-between allign-items-center">
+                    </div>
+                </div>
+              </div>
+            </a>
+           </div>  
+        {% endfor %}
+        </div>
+          </div>
+       </div>
+     </div>  
+{% endblock %}
+        
+       
+
+ 

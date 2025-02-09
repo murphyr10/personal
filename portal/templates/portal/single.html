@@ -1,0 +1,307 @@
+{% extends "../base/base.html" %}
+
+{% block title %}
+{{post.title}}
+{% endblock %}
+
+{% block content %}
+{% include "base/nav-main.html" %}
+
+{% load static %}
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=PT+Serif:wght@400;700&display=swap');
+
+    .h1 {
+      font-family: 'PT Serif', serif;
+      font-size: 2.55rem;
+      line-height: 2.6rem;
+      letter-spacing: -0.063px;
+    }
+
+    h2 {
+      font-family: 'PT Serif', serif;
+      font-size: 1.9rem;
+      line-height: 2.6rem;
+      letter-spacing: -0.063px;
+      font-weight: 700;
+      padding-top: 48px;
+    }
+
+    p {
+      font-family: 'PT Serif', serif;
+      line-height: 2rem;
+      font-size: 1.3rem;
+    }
+
+    .avatar_single {
+      height: 48px;
+      width: 48px;
+      background-color: #000;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .smaller {
+      font-size: 0.8rem;
+    }
+
+    .like-button .bi-heart {
+        color: #ccc;  /* Default gray color */
+    }
+
+    .like-button.liked .bi-heart {
+        color: red;  /* Red color when liked */
+    }
+
+    /* Floating comment box styles */
+    .floating-comment-box {
+        position: fixed;
+        left: 20px;
+        bottom: 20px;
+        width: 300px;
+        background-color: #fff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 15px;
+        display: none;  /* Initially hidden */
+        z-index: 9999;
+        border-radius: 8px;
+    }
+
+    .floating-comment-box textarea {
+        width: 100%;
+        height: 100px;
+        resize: none;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 10px;
+    }
+
+    .floating-comment-box button {
+        width: 100%;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 4px;
+        margin-top: 10px;
+    }
+
+    .floating-comment-box button:hover {
+        background-color: #0056b3;
+    }
+
+    /* Styles for the comment box and button */
+    .comments-box {
+        border: 1px solid #ddd;
+        padding: 20px;
+        margin-top: 20px;
+        background-color: #f9f9f9;
+        border-radius: 5px;
+        max-height: 400px;
+        overflow-y: auto;
+        position: relative; /* Required for the close button to align correctly */
+    }
+
+    .comment {
+        margin-bottom: 15px;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 10px;
+    }
+
+    /* Style for close button (icon version) */
+    .close-comments-btn {
+        cursor: pointer;
+        font-size: 1.5rem;
+        color: #000;  /* Black color for the 'X' */
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background-color: transparent;  /* Transparent background */
+        border: 2px solid #ccc;  /* Border for a square look */
+        padding: 5px 8px;  /* Adjust padding to make it square */
+        display: none;  /* Initially hidden */
+        border-radius: 0;  /* Ensure it stays square */
+        width: 30px;  /* Fixed width for square */
+        height: 30px;  /* Fixed height for square */
+        text-align: center;
+        line-height: 1;  /* Center the 'X' vertically */
+    }
+
+    /* Close button hover effect */
+    .close-comments-btn:hover {
+        color: #ff0000;  /* Change color to red when hovered */
+        border-color: #ff0000;  /* Change border to red on hover */
+    }
+
+</style>
+
+<div class='container'>
+    <div class="row justify-content-md-center pt-5">
+        <div class="col-md-9">
+            <h3 class="card-text">{{post.excerpt|safe}}</h3><br>
+            <div class="image-container" style="position: relative;">
+                <img class="card-img-top" src="{{ post.image.url }}" alt="card image cap"><br><br>
+
+                <div class="like-button" style="position: absolute; top: -30px; right: 10px; z-index: 10;">
+                    <span id="like_count">{{ post.like_count }}</span>
+                    <button class="btn btn-link text-dark p-0 border-0 btn-outline-light" id="like-button" value="{{ post.id }}">
+                        <svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-heart" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M8 2.748l-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div class="col-12"><p>{{post.content|safe}}</p></div>
+            <br><br>
+
+            <div class="col-md-12">
+                {% with comments.count as total_comments %}
+                    <h2>
+                        {% if total_comments > 0 %}
+                            <button id="view-comments-btn" class="btn btn-link text-dark">
+                               <h3> View All  ({{ total_comments }}) Comments </h3>
+                            </button>
+                        {% else %}
+                            <p>There are no comments for this post.</p>
+                        {% endif %}
+                    </h2>
+                {% endwith %}
+
+                <!-- All comments are initially hidden inside the box -->
+                
+                <div id="comments-box" class="comments-box" style="display: none;">
+                    
+                    {% for comment in comments %}
+                        <div class="comment">
+                            <strong>Comment {{ forloop.counter }} by {{ comment.user.username }}</strong>
+                            on {{ comment.publish }}
+                            <p>{{ comment.content|linebreaks }}</p>
+                        </div>
+                       
+                    {% empty %}
+                        <p>There are no comments for this post.</p>
+                    {% endfor %}
+                </div>
+                <button id="add-comment-btn" class="btn btn-primary">
+                    Add Comment
+                </button>
+                <button id="close-comments-btn" class="close-comments-btn">X</button> <!-- Close icon -->
+            </div>
+
+            <br><br>
+
+            <!-- Floating comment box -->
+            <div id="floating-comment-box" class="floating-comment-box">
+                <h4>Leave a Comment</h4>
+                <form id="comment-form" method="POST" action="{% url 'post_single' post.id %}">
+                    {% csrf_token %}
+                    {{ comment_form.as_p }}
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
+
+           
+
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).on('click', '#like-button', function (e) {
+        e.preventDefault();
+        var likeButton = $(this).closest('.like-button');  // Get the like button container
+        var postId = $(this).val();  // Get the post ID from the button value
+        
+        $.ajax({
+            type: 'POST',
+            url: '{% url "accounts:like" %}',
+            data: {
+                postid: postId,
+                csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                action: 'toggle_like'  // Backend will handle the toggle
+            },
+            success: function (json) {
+                // Update the like count
+                $('#like_count').text(json['result']);
+    
+                // Toggle the "liked" class based on the response
+                if (json['is_liked']) {
+                    likeButton.addClass('liked');  // Add the "liked" class if post is liked
+                } else {
+                    likeButton.removeClass('liked');  // Remove the "liked" class if post is unliked
+                }
+            },
+            error: function (xhr, errmsg, err) {
+                console.log("Error: " + errmsg);  // Optionally, log or alert the error
+            }
+        });
+    });
+
+
+
+
+
+    // Show the floating comment box when "Add Comment" is clicked
+    $(document).on('click', '#add-comment-btn', function () {
+        $('#floating-comment-box').fadeIn();  // Show the comment box with a fade-in effect
+    });
+
+    // Handle the form submission with AJAX for comments
+    $('#comment-form').on('submit', function (e) {
+        e.preventDefault();  // Prevent the default form submission
+
+        var formData = $(this).serialize();  // Serialize the form data
+
+        $.ajax({
+            type: 'POST',
+            url: '{% url "post_single" post.id %}',  // Your post URL for comment submission
+            data: formData,
+            success: function(response) {
+                if (response.status === 'success') {
+                    // Hide the floating comment box after submission
+                    $('#floating-comment-box').fadeOut();
+
+                    // Create the HTML for the new comment
+                    var newCommentHtml = `
+                        <div class="comment">
+                            <strong>${response.comment.username}</strong>
+                            <p>${response.comment.content}</p>
+                            <small>Posted on ${response.comment.publish}</small>
+                        </div>
+                    `;
+                
+                    // Append the new comment to the comments section
+                    $('#comments-section').append(newCommentHtml);  // Append new comment
+                    $('#comment-form')[0].reset();  // Reset the form
+                } else {
+                    alert("There was an error submitting your comment.");
+                }
+            },
+            error: function(xhr, errmsg, err) {
+                console.log("Error: " + errmsg);
+                alert("There was an error with your request.");
+            }
+        });
+    });
+
+    // Show the comments when "View All Comments" is clicked
+    $(document).on('click', '#view-comments-btn', function () {
+        $('#comments-box').slideDown('slow');  // Reveal the comments with a slide effect
+        $('#close-comments-btn').show();  // Show the close button
+        $(this).hide();  // Hide the "View All Comments" button
+    });
+
+    // Close the comments when the close button is clicked
+    $(document).on('click', '#close-comments-btn', function () {
+        $('#comments-box').slideUp('slow');  // Hide the comments with a slide effect
+        $('#view-comments-btn').show();  // Show the "View All Comments" button again
+        $(this).hide();  // Hide the close button again
+    });
+</script>
+
+{% include "base/footer.html" %}
+{% endblock %}
