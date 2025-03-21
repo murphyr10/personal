@@ -10,7 +10,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 import os
+from dotenv import load_dotenv
 from pathlib import Path
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -150,14 +152,13 @@ LOGIN_REDIRECT_URL ='accounts:profile'
 LOGIN_URL ='login'
 LOGOUT_REDIRECT_URL ='login'
 
+load_dotenv()
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.zoho.com'  # Zoho SMTP server
-EMAIL_PORT = 587  # TLS port (use 465 for SSL)
-EMAIL_USE_TLS = True  # Use TLS (more secure than SSL)
-EMAIL_HOST_USER = 'no-reply@adexgram.com'  # Your custom email address
-EMAIL_HOST_PASSWORD = 'FDR7r2cNTi6c'  # Your email password
-DEFAULT_FROM_EMAIL = 'AdexBlog <no-reply@adexgram.com>'  # Email to appear as the sender
+EMAIL_HOST = os.getenv('EMAIL_HOST')
+EMAIL_PORT = os.getenv('EMAIL_PORT')
+EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS') == 'True'
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 
 
 # Default primary key field type
