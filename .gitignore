@@ -17,3 +17,6 @@ __pycache__/
 db.sqlite3
 
 venv
+
+
+__pycache__/
