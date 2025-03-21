@@ -151,7 +151,13 @@ LOGIN_URL ='login'
 LOGOUT_REDIRECT_URL ='login'
 
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.zoho.com'  # Zoho SMTP server
+EMAIL_PORT = 587  # TLS port (use 465 for SSL)
+EMAIL_USE_TLS = True  # Use TLS (more secure than SSL)
+EMAIL_HOST_USER = 'no-reply@adexgram.com'  # Your custom email address
+EMAIL_HOST_PASSWORD = 'FDR7r2cNTi6c'  # Your email password
+DEFAULT_FROM_EMAIL = 'AdexBlog <no-reply@adexgram.com>'  # Email to appear as the sender
 
 
 # Default primary key field type

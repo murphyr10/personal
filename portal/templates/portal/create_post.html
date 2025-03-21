@@ -13,7 +13,6 @@
 <form method="POST" enctype="multipart/form-data" style="max-width: 600px; margin: 0 auto; padding: 30px;
 background-color: #ffffff; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);">
     {% csrf_token %}
-    {% csrf_token %}
     {{ form.as_p }}
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>

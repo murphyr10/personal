@@ -91,7 +91,7 @@ def accounts_register(request):
             subject = 'Activate your Account'
             message = render_to_string('registration/email_activation.html', {
                 'user': user,
-                'domain': current_site.domain,
+                'domain': "adexblog.com",
                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                 'token': account_activation_token.make_token(user),
             })
