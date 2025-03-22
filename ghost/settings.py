@@ -22,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-8o!me0)-h2xf)jh_^$2&!ou%*5*d!ybi7!6d2690dl7-0)^73+'
+SECRET_KEY =  os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -42,8 +42,6 @@ INSTALLED_APPS = [
     'portal',
     'mptt',
     'accounts',
-   
-    
 ]
 
 MIDDLEWARE = [
@@ -54,7 +52,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-     
 ]
 
 ROOT_URLCONF = 'ghost.urls'
@@ -71,11 +68,8 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'portal.views.category_list',
-                 'accounts.views.avatar',
-                 'portal.context_processors.notifications',
-                
-                
-                
+                'accounts.views.avatar',
+                'portal.context_processors.notifications',
             ],
         },
     },
@@ -101,24 +95,22 @@ DATABASES = {
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-
-                 'OPTIONS': {
+        'OPTIONS': {
             'user_attributes': ('username', 'email', 'first_name', 'last_name'),
-             'max_similarity': 0.5
+            'max_similarity': 0.5
         }
     },
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-                 'OPTIONS': {
+        'OPTIONS': {
             'min_length': 10, 
         }
-
     },
     {
         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        'NAME': 'django.contrib.auth_password_validation.NumericPasswordValidator',
     },
 ]
 
@@ -139,7 +131,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT =os.path.join(BASE_DIR,'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -148,9 +140,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 
-LOGIN_REDIRECT_URL ='accounts:profile'
-LOGIN_URL ='login'
-LOGOUT_REDIRECT_URL ='login'
+LOGIN_REDIRECT_URL = 'accounts:profile'
+LOGIN_URL = 'login'
+LOGOUT_REDIRECT_URL = 'login'
 
 load_dotenv()
 
@@ -165,5 +157,3 @@ EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-
