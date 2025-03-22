@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-8o!me0)-h2xf)jh_^$2&!ou%*5*d!ybi7!6d2690dl7-0)^73+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['www.adexgram.com','adexgram.com']
 
 
 # Application definition
@@ -40,8 +40,8 @@ INSTALLED_APPS = [
     'portal',
     'mptt',
     'accounts',
-   
-    
+
+
 ]
 
 MIDDLEWARE = [
@@ -52,7 +52,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-     
+
 ]
 
 ROOT_URLCONF = 'ghost.urls'
@@ -71,9 +71,9 @@ TEMPLATES = [
                 'portal.views.category_list',
                  'accounts.views.avatar',
                  'portal.context_processors.notifications',
-                
-                
-                
+
+
+
             ],
         },
     },
@@ -108,7 +108,7 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
                  'OPTIONS': {
-            'min_length': 10, 
+            'min_length': 10,
         }
 
     },
@@ -149,6 +149,12 @@ MEDIA_URL = '/media/'
 LOGIN_REDIRECT_URL ='accounts:profile'
 LOGIN_URL ='login'
 LOGOUT_REDIRECT_URL ='login'
+
+
+SECURE_SSL_REDIRECT = True
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
