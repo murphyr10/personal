@@ -1,3 +1,51 @@
+<style>
+  .card-img-top {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+      border-radius: 5px;
+  }
+  .card {
+    height: 400px; /* Fixed card height */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-img-top {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.card-body {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.card-body h2 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.card-body p {
+    font-size: 14px;
+    color:rgb(36, 137, 225);
+    margin-bottom: 10px;
+}
+
+.card-body .d-flex {
+    margin-top: auto;
+}
+</style>
+
+
 
 {% extends "portal/base.html" %}   
 {% load static %}
@@ -24,7 +72,7 @@ Welcome to Blog
                   <h2 style="font-size:18px;font-weight:bold">{{post.title|truncatechars:70}}</h2>
                   <p class="card-text">{{post.excerpt|truncatechars:70}}</p>
                   <div class="d-flex justify-content-between allign-items-center">
-                      <small class="text-muted">9 mins</small>
+                      
                   </div>
               </div>
           </div>

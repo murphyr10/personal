@@ -1,7 +1,20 @@
 {% autoescape off %}
 Hi {{ user.username }},
 
-Your account has successfully created. Please click the link below to activate your account
+Welcome to AdexBlog! We're excited to have you on board.
+
+To complete your registration and start exploring, please activate your account by clicking the link below:
 
 http://{{ domain }}{% url 'accounts:activate' uidb64=uid token=token %}
+
+
+If you did not sign up for an account, you can safely ignore this email.
+
+This link is valid for 24 hours. If it expires, you’ll need to request a new activation link.
+
+Need help? Feel free to reach out to our support team.
+
+Best regards,
+The AdexBlog Team
 {% endautoescape %}
+
